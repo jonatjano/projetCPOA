@@ -12,7 +12,7 @@ public class Snake
 
 	/**
 	 * @param args
-	 */fgdtr
+	 */fgdtrjhgtilkzomejtrl
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
