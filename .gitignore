@@ -1,0 +1,5 @@
+# on ingnore bin/ pour ne pas envoyer les .class qui seront générés lors de la compilation
+/bin/*
+
+# on envoie pas le classpath qui contient le chemin absolu jusqu'a un fichier local et n'est donc pas le même pour tous
+/.classpath
