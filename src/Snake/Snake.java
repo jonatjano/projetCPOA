@@ -3,6 +3,8 @@
  */
 package Snake;
 
+import simbad.gui.Simbad;
+
 /**
  * @author jonatjano
  * @version 2017-12-07
@@ -15,6 +17,6 @@ public class Snake
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
+		Simbad frame = new Simbad(new MyEnv() ,false);
 	}
 }
