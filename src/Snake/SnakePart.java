@@ -6,6 +6,8 @@ import simbad.sim.Agent;
 
 public abstract class SnakePart extends Agent
 {	
+	
+	protected double angle;
 	private SnakePart link;
 	private MyEnv env;
 	
@@ -23,6 +25,7 @@ public abstract class SnakePart extends Agent
 
 	public void performBehavior()
 	{
+		angle += getRotationalVelocity();
 	}
 	
 	protected MyEnv getEnv()

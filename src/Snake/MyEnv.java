@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.media.j3d.Transform3D;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
@@ -22,40 +23,56 @@ import simbad.sim.Wall;
 
 public class MyEnv extends EnvironmentDescription
 {
+	private SnakePart stock;
 	private SnakePart head;
-	private SnakePart firstBody;
-	
+	private SnakePart last;
+
 	public MyEnv()
 	{
-		 Wall w1 = new Wall(new Vector3d(9, 0, 0), 19, 1, this);
-		 w1.rotate90(1);
-		 add(w1);
-		 Wall w2 = new Wall(new Vector3d(-9, 0, 0), 19, 2, this);
-		 w2.rotate90(1);
-		 add(w2);
-		 Wall w3 = new Wall(new Vector3d(0, 0, 9), 19, 1, this);
-		 add(w3);
-		 Wall w4 = new Wall(new Vector3d(0, 0, -9), 19, 2, this);
-		 add(w4);
-		 head = new SnakeHead(new Vector3d(0, 0, 0), this);
-		 firstBody = new SnakeBody(new Vector3d(0, 0, 0), this);
-		 head.setPartLink(firstBody);
-		 firstBody.setPartLink(head);
-		 add(head);
-		 add(firstBody);
+		Wall w1 = new Wall(new Vector3d(worldSize / 2, 0, 0), worldSize, 1, this);
+		w1.rotate90(1);
+		add(w1);
+		Wall w2 = new Wall(new Vector3d(-worldSize / 2, 0, 0), worldSize, 2, this);
+		w2.rotate90(1);
+		add(w2);
+		Wall w3 = new Wall(new Vector3d(0, 0, worldSize / 2), worldSize, 1, this);
+		add(w3);
+		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 2, this);
+		add(w4);
+		head = new SnakeHead(new Vector3d(0, 0, 0), this);
+		last = new SnakeBody(new Vector3d(0, 0, 0), this);
+		last.setPartLink(head);
+		head.setPartLink(last);
+		add(head);
+
+		stock = new SnakeBody(new Vector3d(0, 100, 0), this);
+		add(stock);
+		for (int i = 0; i < Math.pow(worldSize * 2, 2); i++)
+		{
+			SnakePart nextStock = new SnakeBody(new Vector3d(0, 100, 0), this);
+			nextStock.setColor(new Color3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
+			nextStock.setPartLink(stock);
+			stock = nextStock;
+			add(stock);
+		}
+		add(last);
 	}
-	
+
 	void growSnake()
 	{
-		 Wall w4 = new Wall(new Vector3d(0, 0, 0), 19, 2, this);
-		 add(w4);
-		SnakeBody newBody = new SnakeBody(new Vector3d(0, 0, 0), this);
-		newBody.setColor(new Color3f((float)Math.random(), (float)Math.random(), (float)Math.random()));
-		newBody.setPartLink(head);
-		firstBody.setPartLink(newBody);
-		head.setPartLink(newBody);
-		firstBody = newBody;
-		Vector3d v3d = head.getVector3d();
-		add(new SnakeBody(head.getVector3d(), this));
+		SnakeBody newBody = (SnakeBody) stock;
+		stock = stock.getLinked();
+		
+		newBody.setPartLink(last);
+		Vector3d v3d = last.getVector3d();
+
+		Transform3D rotation = new Transform3D();
+		last.getRotationTransform(rotation);
+
+		last = newBody;
+		v3d.setY(-100);
+		newBody.translateTo(v3d);
+		newBody.rotateY(rotation);
+		newBody.isAdded();
 	}
 }
