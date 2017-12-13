@@ -3,9 +3,6 @@ package Snake;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 public class SnakeBody extends SnakePart
@@ -13,34 +10,40 @@ public class SnakeBody extends SnakePart
 	private boolean startedToMove;
 	private List<double[]> lastPositions; 
 	private int startingCounter;
+	private static int count = 0;
 	
 	public SnakeBody(Vector3d position, MyEnv env)
 	{
-		super(position, "body", env);
-		startedToMove = false;
-		lastPositions = new ArrayList<double[]>();
-	}
-
-	public void initBehavior()
-	{
-		startingCounter = getCounter();
+		super(position, "body" + count++, env);
+		resetValues();
 	}
 
 	public void performBehavior()
 	{
+		if (getName().equals("body0") || getName().equals("body401"))
+		{
+			System.out.println(getName() + " : " + (getCounter() - startingCounter - ((getName().equals("body0")) ? 100 : 23)) + " : " + getTranslationalVelocity() + ":" + getRotationalVelocity() + " " + startedToMove);
+		}
+		
 		if (getLinked() != null)
 		{
+//			System.out.println(getName() + " linked " + getLinked());
 			lastPositions.add(new double[] {getLinked().getTranslationalVelocity(), getLinked().getRotationalVelocity()});
 			
-			if ((!anOtherAgentIsVeryNear() || getVeryNearAgent() != getLinked()) && getCounter() > startingCounter + 10)
+		/*	if ((!anOtherAgentIsVeryNear() || getVeryNearAgent() != getLinked()) && getCounter() > startingCounter + 10)
 			{
+//				System.out.println(getName() + " verynear " + getVeryNearAgent());
+				startedToMove = true;
+			}*/
+			
+			if (getCounter() > startingCounter + 23)
+			{
+//				System.out.println(getName() + " verynear " + getVeryNearAgent());
 				startedToMove = true;
 			}
-				
+
 			if (startedToMove)
 			{
-				super.performBehavior();	
-				
 				double[] dest = lastPositions.remove(0);
 				setTranslationalVelocity(dest[0]);
 				setRotationalVelocity(dest[1]);
@@ -48,7 +51,13 @@ public class SnakeBody extends SnakePart
 		}
 	}
 	
-	void isAdded()
+	void resetValues(SnakePart link)
+	{
+		setPartLink(link);
+		resetValues();
+	}
+	
+	void resetValues()
 	{
 		startingCounter = getCounter();
 		startedToMove = false;
