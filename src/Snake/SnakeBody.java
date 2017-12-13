@@ -7,7 +7,7 @@ import javax.vecmath.Vector3d;
 
 public class SnakeBody extends SnakePart
 {
-	private boolean startedToMove;
+	
 	private List<double[]> lastPositions; 
 	private int startingCounter;
 	private static int count = 0;
@@ -20,28 +20,30 @@ public class SnakeBody extends SnakePart
 
 	public void performBehavior()
 	{
-		if (getName().equals("body0") || getName().equals("body401"))
-		{
-			System.out.println(getName() + " : " + (getCounter() - startingCounter - ((getName().equals("body0")) ? 100 : 23)) + " : " + getTranslationalVelocity() + ":" + getRotationalVelocity() + " " + startedToMove);
-		}
+		super.performBehavior();
+		//if (getName().equals("body0") || getName().equals("body401"))
+		//{
+		//	System.out.println(getName() + " : " + (getCounter() - startingCounter - ((getName().equals("body0")) ? 100 : 23)) + " : " + getTranslationalVelocity() + ":" + getRotationalVelocity() + " " + startedToMove);
+		//}
 		
 		if (getLinked() != null)
 		{
 //			System.out.println(getName() + " linked " + getLinked());
 			lastPositions.add(new double[] {getLinked().getTranslationalVelocity(), getLinked().getRotationalVelocity()});
-			
-		/*	if ((!anOtherAgentIsVeryNear() || getVeryNearAgent() != getLinked()) && getCounter() > startingCounter + 10)
+			if (getName().equals("body0"))
 			{
-//				System.out.println(getName() + " verynear " + getVeryNearAgent());
-				startedToMove = true;
-			}*/
-			
-			if (getCounter() > startingCounter + 23)
+				System.out.println(lastPositions.size());
+				System.out.println(!anOtherAgentIsVeryNear());
+				System.out.println(getVeryNearAgent() != getLinked());
+				
+			}
+				
+			if (((!anOtherAgentIsVeryNear() || getVeryNearAgent() != getLinked()) && getCounter() > startingCounter + 10) && !startedToMove)
 			{
 //				System.out.println(getName() + " verynear " + getVeryNearAgent());
 				startedToMove = true;
 			}
-
+			
 			if (startedToMove)
 			{
 				double[] dest = lastPositions.remove(0);

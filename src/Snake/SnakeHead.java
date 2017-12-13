@@ -21,14 +21,25 @@ public class SnakeHead extends SnakePart
 		if (getCounter() > 10)
 		{
 			super.performBehavior();
-			if ((getCounter() % 50) == 0)
+			/*if ((getCounter() % 50) == 0)
 			{
 				setRotationalVelocity((-0.5 + Math.random()) * 2);
-			}
+			}*/
 
 			if ((getCounter() % 100) == 0)
 			{
 				getEnv().growSnake();
+				setRotationalVelocity(Math.PI);
+			}
+			
+			if ((getCounter() % 101) == 0)
+			{
+				setRotationalVelocity(0);
+			}
+			
+			if (getCounter() >= 1200)
+			{
+				setRotationalVelocity(0);
 			}
 
 			if (anOtherAgentIsVeryNear() && getVeryNearAgent() != getLinked())

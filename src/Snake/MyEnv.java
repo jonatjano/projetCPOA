@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -39,17 +40,19 @@ public class MyEnv extends EnvironmentDescription
 		add(w3);
 		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 2, this);
 		add(w4);
+
 		head = new SnakeHead(new Vector3d(0, 0, 0), this);
 		last = new SnakeBody(new Vector3d(0, 0, 0), this);
+		last.setColor(new Color3f(1f,0f,0f));
 		last.setPartLink(head);
 		head.setPartLink(last);
 		add(head);
 
-		stock = new SnakeBody(new Vector3d(0, 100, 0), this);
+		stock = new SnakeBody(new Vector3d(0, 15, 0), this);
 		add(stock);
 		for (int i = 0; i < Math.pow(worldSize * 2, 2); i++)
 		{
-			SnakePart nextStock = new SnakeBody(new Vector3d(0, 100, 0), this);
+			SnakePart nextStock = new SnakeBody(new Vector3d(0, 15, 0), this);
 			nextStock.setColor(new Color3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
 			nextStock.setPartLink(stock);
 			stock = nextStock;
@@ -63,16 +66,15 @@ public class MyEnv extends EnvironmentDescription
 		SnakeBody newBody = (SnakeBody) stock;
 		stock = stock.getLinked();
 		
-		newBody.setPartLink(last);
 		Vector3d v3d = last.getVector3d();
 
 		Transform3D rotation = new Transform3D();
 		last.getRotationTransform(rotation);
-
+		
+		newBody.resetValues(last);
 		last = newBody;
-		v3d.setY(-100);
+		v3d.setY(-15);
 		newBody.translateTo(v3d);
 		newBody.rotateY(rotation);
-		newBody.isAdded();
 	}
 }

@@ -6,7 +6,7 @@ import simbad.sim.Agent;
 
 public abstract class SnakePart extends Agent
 {	
-	
+	protected boolean startedToMove;
 	protected double angle;
 	private SnakePart link;
 	private MyEnv env;
