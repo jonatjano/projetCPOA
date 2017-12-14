@@ -113,7 +113,15 @@ public class Simbad extends JFrame implements ActionListener {
         disposeInternalFrames();
     }
     
-
+    /**
+     * restart with a new {@link EnvironmentDescription}
+     * @param ed the new {@link EnvironmentDescription} to use
+     */
+    public void restart(EnvironmentDescription ed)
+    {
+    	releaseRessources();
+    	start(ed);
+    }
 
     /**
      * Creates the windows as Swing InternalFrames

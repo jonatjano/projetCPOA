@@ -4,9 +4,16 @@ import javax.vecmath.Vector3d;
 
 public class SnakeHead extends SnakePart
 {	
+	private SnakePart last;
+	
 	public SnakeHead(Vector3d position, MyEnv env)
 	{
 		super(position, "head", env);
+	}
+	
+	void setLast(SnakePart l)
+	{
+		last = l;
 	}
 
 	public void initBehavior()
@@ -37,10 +44,10 @@ public class SnakeHead extends SnakePart
 				setRotationalVelocity(0);
 			}
 			
-			if (getCounter() >= 1200)
-			{
-				setRotationalVelocity(0);
-			}
+//			if (getCounter() >= 1200)
+//			{
+//				setRotationalVelocity(0);
+//			}
 
 			if (anOtherAgentIsVeryNear() && getVeryNearAgent() != getLinked())
 			{
@@ -51,12 +58,14 @@ public class SnakeHead extends SnakePart
 //				else
 //				{
 					System.out.println("collision de la tête avec : " + getVeryNearAgent());
+					last.kill();
 //				}
 			}
 
 			if (collisionDetected())
 			{
 				System.out.println("collision de la tête avec un mur");
+				last.kill();
 			}
 		}
 	}

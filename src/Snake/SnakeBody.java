@@ -30,14 +30,7 @@ public class SnakeBody extends SnakePart
 		{
 //			System.out.println(getName() + " linked " + getLinked());
 			lastPositions.add(new double[] {getLinked().getTranslationalVelocity(), getLinked().getRotationalVelocity()});
-			if (getName().equals("body0"))
-			{
-				System.out.println(lastPositions.size());
-				System.out.println(!anOtherAgentIsVeryNear());
-				System.out.println(getVeryNearAgent() != getLinked());
-				
-			}
-				
+			
 			if (((!anOtherAgentIsVeryNear() || getVeryNearAgent() != getLinked()) && getCounter() > startingCounter + 10) && !startedToMove)
 			{
 //				System.out.println(getName() + " verynear " + getVeryNearAgent());

@@ -17,6 +17,6 @@ public class Snake
 	 */
 	public static void main(String[] args)
 	{
-		Simbad frame = new Simbad(new MyEnv() ,false);
+//		Simbad frame = new Simbad(new MyEnv() ,false);
 	}
 }

@@ -25,7 +25,6 @@ public abstract class SnakePart extends Agent
 
 	public void performBehavior()
 	{
-		angle += getRotationalVelocity();
 	}
 	
 	protected MyEnv getEnv()
@@ -46,5 +45,23 @@ public abstract class SnakePart extends Agent
 	Vector3d getVector3d()
 	{
 		return (Vector3d) v1.clone();
+	}
+	
+	void kill()
+	{
+		System.out.println(getName() + " killed");
+
+		Vector3d v3d = getVector3d();
+		v3d.setY(100);
+		translateTo(v3d);
+		if(!getName().equals("head"))
+		{
+			getLinked().kill();
+		}
+		else 
+		{
+            simulator.stopSimulation();
+            MyEnv.restart();
+		}
 	}
 }

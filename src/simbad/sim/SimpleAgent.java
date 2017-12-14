@@ -52,7 +52,7 @@ public  class SimpleAgent extends BaseObject {
     SimpleAgent veryNearAgent;
       
     /** Parent simulator. */
-    private Simulator simulator;
+    protected Simulator simulator;
      /** The agent's sensors */
     private ArrayList sensors;
     /** The agent's actuators */
@@ -245,7 +245,7 @@ public  class SimpleAgent extends BaseObject {
         v1.scale(dt);
         angularVelocity.add(v1);
      }
-    /** Perform velocities integration step .¬ */
+    /** Perform velocities integration step .ï¿½ */
     protected void integratesPositionChange(double dt){
        
         
