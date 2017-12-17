@@ -12,28 +12,22 @@ public class SnakeBody extends SnakePart
 	private int startingCounter;
 	private static int count = 0;
 	
-	public SnakeBody(Vector3d position, MyEnv env)
+	public SnakeBody(Vector3d position, Snake snake)
 	{
-		super(position, "body" + count++, env);
+		super(position, "body" + count++, snake);
 		resetValues();
 	}
 
 	public void performBehavior()
 	{
 		super.performBehavior();
-		//if (getName().equals("body0") || getName().equals("body401"))
-		//{
-		//	System.out.println(getName() + " : " + (getCounter() - startingCounter - ((getName().equals("body0")) ? 100 : 23)) + " : " + getTranslationalVelocity() + ":" + getRotationalVelocity() + " " + startedToMove);
-		//}
 		
 		if (getLinked() != null)
 		{
-//			System.out.println(getName() + " linked " + getLinked());
-			lastPositions.add(new double[] {getLinked().getTranslationalVelocity(), getLinked().getRotationalVelocity()});
+			lastPositions.add(new double[] { getLinked().getTranslationalVelocity(), getLinked().getRotationalVelocity() });
 			
-			if (((!anOtherAgentIsVeryNear() || getVeryNearAgent() != getLinked()) && getCounter() > startingCounter + 10) && !startedToMove)
+			if (isAwayFromLinked() && getCounter() > startingCounter + 10 && !startedToMove)
 			{
-//				System.out.println(getName() + " verynear " + getVeryNearAgent());
 				startedToMove = true;
 			}
 			
@@ -59,5 +53,10 @@ public class SnakeBody extends SnakePart
 		lastPositions = new ArrayList<double[]>();
 		setTranslationalVelocity(0);
 		setRotationalVelocity(0);
+	}
+	
+	static void resetCounter()
+	{
+		count = 0;
 	}
 }

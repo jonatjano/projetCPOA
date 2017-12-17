@@ -581,8 +581,6 @@ public  class SimpleAgent extends BaseObject {
 	
 	/** Returns  the currently touched agent - null if no agent near.*/
 	public SimpleAgent getVeryNearAgent(){ return veryNearAgent;}
-	
-	
 
 	
 }

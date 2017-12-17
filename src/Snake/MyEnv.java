@@ -1,38 +1,45 @@
 package Snake;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.Properties;
 
-import javax.media.j3d.Transform3D;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
 
 import simbad.gui.Simbad;
-import simbad.sim.Arch;
-import simbad.sim.BallAgent;
-import simbad.sim.Box;
-import simbad.sim.CherryAgent;
 import simbad.sim.EnvironmentDescription;
-import simbad.sim.StaticObject;
 import simbad.sim.Wall;
-
 
 public class MyEnv extends EnvironmentDescription
 {
+	private static int BASE_NB_SNAKE = 1;
+	private static float BASE_WORLDSIZE = 20f;
+	private static Color3f BASE_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
+	
+	
 	private static Simbad frame;
 	
 	private SnakePart stock;
-	private SnakeHead head;
-	private SnakePart last;
 
 	public MyEnv()
 	{
+		this(new Properties());
+	}
+
+	public MyEnv(Properties prop)
+	{
+		SnakePart.resetCounter();
+		
+		worldSize = BASE_WORLDSIZE;
+		if (prop.get("worldSize") != null) { worldSize = (Integer)prop.get("worldSize"); }
+		
+		floorColor = BASE_FLOOR_COLOR;
+		
+		int nbSnake = BASE_NB_SNAKE;
+		if (prop.get("nbSnake") != null) { nbSnake = (Integer)prop.get("nbSnake"); }
+		if (nbSnake < 1) { nbSnake = 1; }
+		
+		
+		
 		Wall w1 = new Wall(new Vector3d(worldSize / 2, 0, 0), worldSize, 1, this);
 		w1.rotate90(1);
 		add(w1);
@@ -44,42 +51,27 @@ public class MyEnv extends EnvironmentDescription
 		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 2, this);
 		add(w4);
 
-		head = new SnakeHead(new Vector3d(0, 0, 0), this);
-		last = new SnakeBody(new Vector3d(0, 0, 0), this);
-		last.setColor(new Color3f(1f,0f,0f));
-		last.setPartLink(head);
-		head.setPartLink(last);
-		add(head);
+		for (int i = 0; i < nbSnake; i++)
+		{
+			new Snake(this, new Vector3d(0, 0, i));
+		}
 
-		stock = new SnakeBody(new Vector3d(0, 100, 0), this);
+		stock = new SnakeBody(new Vector3d(0, 100, 0), null);
 		add(stock);
 		for (int i = 0; i < Math.pow(worldSize * 2, 2); i++)
 		{
-			SnakePart nextStock = new SnakeBody(new Vector3d(0, 100, 0), this);
-			nextStock.setColor(new Color3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
+			SnakePart nextStock = new SnakeBody(new Vector3d(0, 100, 0), null);
 			nextStock.setPartLink(stock);
 			stock = nextStock;
 			add(stock);
 		}
-		add(last);
 	}
 
-	void growSnake()
+	SnakeBody nextStock()
 	{
-		SnakeBody newBody = (SnakeBody) stock;
+		SnakeBody ret = (SnakeBody) stock;
 		stock = stock.getLinked();
-		
-		Vector3d v3d = last.getVector3d();
-
-		Transform3D rotation = new Transform3D();
-		last.getRotationTransform(rotation);
-		
-		newBody.resetValues(last);
-		last = newBody;
-		head.setLast(last);
-		v3d.setY(-100);
-		newBody.translateTo(v3d);
-		newBody.rotateY(rotation);
+		return ret;
 	}
 	
 	public static void main(String[] args)
@@ -89,8 +81,6 @@ public class MyEnv extends EnvironmentDescription
 
 	static void restart()
 	{
-		MyEnv env = new MyEnv();
-		frame.restart(env);
-		env.worldSize = 10;
+		frame.restart(new MyEnv());
 	}
 }
