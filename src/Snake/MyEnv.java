@@ -11,7 +11,13 @@ import simbad.sim.Wall;
 
 public class MyEnv extends EnvironmentDescription
 {
-	private static int BASE_NB_SNAKE = 1;
+	private static String PROP_NB_SNAKE_PLAYER = "nbSnakePl";
+	private static String PROP_NB_SNAKE_IA = "nbSnakeIA";
+	private static String PROP_WORLDSIZE = "worldSize";
+	private static String PROP_FLOOR_COLOR = "floorColor";
+	
+	private static int BASE_NB_SNAKE_PLAYER = 2;
+	private static int BASE_NB_SNAKE_IA = 0;
 	private static float BASE_WORLDSIZE = 20f;
 	private static Color3f BASE_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
 	
@@ -27,16 +33,25 @@ public class MyEnv extends EnvironmentDescription
 
 	public MyEnv(Properties prop)
 	{
+		KeyController.initControls();
+		
 		SnakePart.resetCounter();
 		
 		worldSize = BASE_WORLDSIZE;
-		if (prop.get("worldSize") != null) { worldSize = (Integer)prop.get("worldSize"); }
+		if (prop.get(PROP_WORLDSIZE) != null) { worldSize = (Float)prop.get(PROP_WORLDSIZE); }
+		if (worldSize < 5.0f || worldSize > 30.0f) { worldSize = 20.0f; }
 		
 		floorColor = BASE_FLOOR_COLOR;
+		if (prop.get(PROP_FLOOR_COLOR) != null) { floorColor = (Color3f)prop.get(PROP_FLOOR_COLOR); }
+		if (floorColor == null) { floorColor = BASE_FLOOR_COLOR; }
 		
-		int nbSnake = BASE_NB_SNAKE;
-		if (prop.get("nbSnake") != null) { nbSnake = (Integer)prop.get("nbSnake"); }
-		if (nbSnake < 1) { nbSnake = 1; }
+		int nbSnakePl = BASE_NB_SNAKE_PLAYER;
+		if (prop.get(PROP_NB_SNAKE_PLAYER) != null) { nbSnakePl = (Integer)prop.get(PROP_NB_SNAKE_PLAYER); }
+		if (nbSnakePl < 1) { nbSnakePl = 1; }
+		
+		int nbSnakeIA = BASE_NB_SNAKE_IA;
+		if (prop.get(PROP_NB_SNAKE_IA) != null) { nbSnakeIA = (Integer)prop.get(PROP_NB_SNAKE_IA); }
+		if (nbSnakeIA < 0) { nbSnakeIA = 0; }
 		
 		
 		
@@ -50,17 +65,23 @@ public class MyEnv extends EnvironmentDescription
 		add(w3);
 		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 2, this);
 		add(w4);
+		
 
-		for (int i = 0; i < nbSnake; i++)
+		for (int i = 0; i < nbSnakePl; i++)
 		{
-			new Snake(this, new Vector3d(0, 0, i));
+			new Snake(this, new Vector3d(0, 0, i), true);
 		}
 
-		stock = new SnakeBody(new Vector3d(0, 100, 0), null);
+		for (int i = 0; i < nbSnakeIA; i++)
+		{
+			new Snake(this, new Vector3d(0, 0, -(i + 1)), false);
+		}
+
+		stock = new SnakeBody(new Vector3d(0, Math.random() * 10 + 100, 0), null);
 		add(stock);
 		for (int i = 0; i < Math.pow(worldSize * 2, 2); i++)
 		{
-			SnakePart nextStock = new SnakeBody(new Vector3d(0, 100, 0), null);
+			SnakePart nextStock = new SnakeBody(new Vector3d(0, Math.random() * 10 + 100, 0), null);
 			nextStock.setPartLink(stock);
 			stock = nextStock;
 			add(stock);

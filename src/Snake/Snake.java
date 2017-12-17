@@ -23,7 +23,9 @@ public class Snake
 	private MyEnv env;
 	private Color3f color;
 	
-	Snake(MyEnv myEnv, Vector3d pos)
+	private boolean isPlayerControlled;
+	
+	Snake(MyEnv myEnv, Vector3d pos, boolean playerControlled)
 	{
 		env = myEnv;
 		head = new SnakeHead(pos, this);
@@ -39,6 +41,8 @@ public class Snake
 		while (usedColors.contains(color));
 		usedColors.add(color);
 		head.setColor(color);
+		
+		isPlayerControlled = playerControlled;
 	}
 
 	void grow()
@@ -57,7 +61,11 @@ public class Snake
 		newBody.resetValues(last);
 		last = newBody;
 		head.setLast(last);
-		v3d.setY(-100);
+		
+		Point3d coordNB = new Point3d();
+		newBody.getCoords(coordNB);
+		
+		v3d.setY(-coordNB.y);
 		newBody.translateTo(v3d);
 		newBody.rotateY(rotation);
 	}
@@ -82,5 +90,10 @@ public class Snake
 			}
 		}
 		return null;
+	}
+	
+	public boolean isPlayerControlled()
+	{
+		return isPlayerControlled;
 	}
 }

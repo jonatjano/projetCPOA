@@ -3,12 +3,15 @@ package Snake;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3d;
 
 public class SnakeBody extends SnakePart
 {
+
+	private List<Double> lastSpeeds; 
+	private List<Transform3D> lastRotations; 
 	
-	private List<double[]> lastPositions; 
 	private int startingCounter;
 	private static int count = 0;
 	
@@ -24,7 +27,11 @@ public class SnakeBody extends SnakePart
 		
 		if (getLinked() != null)
 		{
-			lastPositions.add(new double[] { getLinked().getTranslationalVelocity(), getLinked().getRotationalVelocity() });
+			lastSpeeds.add(getLinked().getTranslationalVelocity());
+			Transform3D rot = new Transform3D();
+			getLinked().getRotationTransform(rot);
+			lastRotations.add(rot);
+			
 			
 			if (isAwayFromLinked() && getCounter() > startingCounter + 10 && !startedToMove)
 			{
@@ -33,9 +40,9 @@ public class SnakeBody extends SnakePart
 			
 			if (startedToMove)
 			{
-				double[] dest = lastPositions.remove(0);
-				setTranslationalVelocity(dest[0]);
-				setRotationalVelocity(dest[1]);
+				
+				setTranslationalVelocity(lastSpeeds.remove(0));
+				rotateY(lastRotations.remove(0));
 			}
 		}
 	}
@@ -50,7 +57,10 @@ public class SnakeBody extends SnakePart
 	{
 		startingCounter = getCounter();
 		startedToMove = false;
-		lastPositions = new ArrayList<double[]>();
+		
+		lastSpeeds = new ArrayList<Double>();
+		lastRotations = new ArrayList<Transform3D>();
+		
 		setTranslationalVelocity(0);
 		setRotationalVelocity(0);
 	}

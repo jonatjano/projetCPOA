@@ -95,7 +95,7 @@ public abstract class BaseObject
 	/** Rotates (relative to current rotation) the object about Y axis. */
 	public void rotateY(Transform3D t)
 	{
-		rotation.mul(t);
+		rotation = t;
 		rotationGroup.setTransform(rotation);
 	}
 

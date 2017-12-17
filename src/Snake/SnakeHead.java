@@ -30,12 +30,32 @@ public class SnakeHead extends SnakePart
 		{
 			super.performBehavior();
 			
+			if (getCounter() == 11)
+			{
+				getSnake().grow();
+			}
+			if (getCounter() == 40)
+			{
+				getSnake().grow();
+			}
+			
 			/*if ((getCounter() % 50) == 0)
 			{
 				setRotationalVelocity((-0.5 + Math.random()) * 2);
 			}*/
 
-			if (!getName().equals("head0"))
+			if (getSnake().isPlayerControlled())
+			{
+				if (KeyController.isPressed(KeyController.getControl(getName() + "Left")))
+				{
+					rotateY(0.05);
+				}
+				if (KeyController.isPressed(KeyController.getControl(getName() + "Right")))
+				{
+					rotateY(-0.05);
+				}
+			}
+			else
 			{
 				/* ******** */
 				/* DEBUT IA */
@@ -73,7 +93,7 @@ public class SnakeHead extends SnakePart
 			SnakePart collision = Snake.collideWithSnake(this);
 			if (collision != null)
 			{
-				System.out.println("collision de la tête avec : " + collision + "(" + (collision == getLinked()) + ")");
+				System.out.println("collision de la tête avec : " + collision);
 				last.kill();
 			}
 

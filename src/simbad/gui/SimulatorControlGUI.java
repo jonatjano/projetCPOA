@@ -24,27 +24,28 @@
  */
 package simbad.gui;
 
+import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-import java.awt.Container;
-import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import Snake.KeyController;
+
 import simbad.sim.Agent;
-import simbad.sim.SimpleAgent;
 import simbad.sim.Simulator;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
 
 
 /**
@@ -199,35 +200,39 @@ public class SimulatorControlGUI extends JPanel implements ActionListener, KeyLi
 
 	public void keyPressed(KeyEvent e)
 	{
-		// TODO Auto-generated method stub
-		Agent player = ((Agent) simulator.getAgentList().get(0));
-		switch (KeyEvent.getKeyText(e.getExtendedKeyCode()))
-		{
-			case "Z":
-				player.setRotationalVelocity(0);
-				break;
-				
-			case "Q":
-				if (player.getRotationalVelocity() < 0.50)
-				{
-					player.setRotationalVelocity(player.getRotationalVelocity() + 0.10);
-				}
-				break;
-				
-			case "D":
-				if (player.getRotationalVelocity() > -0.50)
-				{
-					player.setRotationalVelocity(player.getRotationalVelocity() - 0.10);
-				}
-				break;
-
-			default:
-				break;
-		}
+		KeyController.changeState((int) Character.toUpperCase(e.getKeyChar()), true);
+//		Agent player = ((Agent) simulator.getAgentList().get(0));
+//		switch (KeyEvent.getKeyText(e.getExtendedKeyCode()))
+//		{
+//			case "Z":
+//				player.setRotationalVelocity(0);
+//				break;
+//				
+//			case "Q":
+//				if (player.getRotationalVelocity() < 0.50)
+//				{
+////					player.setRotationalVelocity(player.getRotationalVelocity() + 0.10);
+//					player.rotateY(0.05);
+//					
+//				}
+//				break;
+//				
+//			case "D":
+//				if (player.getRotationalVelocity() > -0.50)
+//				{
+////					player.setRotationalVelocity(player.getRotationalVelocity() - 0.10);
+//					player.rotateY(-0.05);
+//				}
+//				break;
+//
+//			default:
+//				break;
+//		}
 	}
 
 	public void keyReleased(KeyEvent e)
 	{
+		KeyController.changeState((int) Character.toUpperCase(e.getKeyChar()), false);
 	}
 
 	public void keyTyped(KeyEvent e)
