@@ -36,6 +36,7 @@ public class MyEnv extends EnvironmentDescription
 		KeyController.initControls();
 		
 		SnakePart.resetCounter();
+		Snake.emptyInGameList();
 		
 		worldSize = BASE_WORLDSIZE;
 		if (prop.get(PROP_WORLDSIZE) != null) { worldSize = (Float)prop.get(PROP_WORLDSIZE); }

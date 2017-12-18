@@ -96,4 +96,10 @@ public class Snake
 	{
 		return isPlayerControlled;
 	}
+	
+	public static void emptyInGameList()
+	{
+		inGameSnakeParts.clear();
+		System.out.println(inGameSnakeParts.size());
+	}
 }
