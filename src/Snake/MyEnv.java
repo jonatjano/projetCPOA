@@ -1,5 +1,6 @@
 package Snake;
 
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.vecmath.Color3f;
@@ -11,16 +12,17 @@ import simbad.sim.Wall;
 
 public class MyEnv extends EnvironmentDescription
 {
-	private static String PROP_NB_SNAKE_PLAYER = "nbSnakePl";
-	private static String PROP_NB_SNAKE_IA = "nbSnakeIA";
-	private static String PROP_WORLDSIZE = "worldSize";
-	private static String PROP_FLOOR_COLOR = "floorColor";
+	public static String PROP_NB_SNAKE_PLAYER = "nbSnakePl";
+	public static String PROP_NB_SNAKE_IA = "nbSnakeIA";
+	public static String PROP_WORLDSIZE = "worldSize";
+	public static String PROP_FLOOR_COLOR = "floorColor";
 	
-	private static int BASE_NB_SNAKE_PLAYER = 2;
-	private static int BASE_NB_SNAKE_IA = 0;
-	private static float BASE_WORLDSIZE = 20f;
-	private static Color3f BASE_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
+	private static int DEFAULT_NB_SNAKE_PLAYER = 2;
+	private static int DEFAULT_NB_SNAKE_IA = 0;
+	private static float DEFAULT_WORLDSIZE = 20f;
+	private static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
 	
+	private static Properties properties = new Properties();
 	
 	private static Simbad frame;
 	
@@ -28,30 +30,25 @@ public class MyEnv extends EnvironmentDescription
 
 	public MyEnv()
 	{
-		this(new Properties());
-	}
-
-	public MyEnv(Properties prop)
-	{
 		KeyController.initControls();
 		
 		SnakePart.resetCounter();
 		Snake.emptyInGameList();
 		
-		worldSize = BASE_WORLDSIZE;
-		if (prop.get(PROP_WORLDSIZE) != null) { worldSize = (Float)prop.get(PROP_WORLDSIZE); }
+		worldSize = DEFAULT_WORLDSIZE;
+		if (properties.get(PROP_WORLDSIZE) != null) { worldSize = (Float)properties.get(PROP_WORLDSIZE); }
 		if (worldSize < 5.0f || worldSize > 30.0f) { worldSize = 20.0f; }
 		
-		floorColor = BASE_FLOOR_COLOR;
-		if (prop.get(PROP_FLOOR_COLOR) != null) { floorColor = (Color3f)prop.get(PROP_FLOOR_COLOR); }
-		if (floorColor == null) { floorColor = BASE_FLOOR_COLOR; }
+		floorColor = DEFAULT_FLOOR_COLOR;
+		if (properties.get(PROP_FLOOR_COLOR) != null) { floorColor = (Color3f)properties.get(PROP_FLOOR_COLOR); }
+		if (floorColor == null) { floorColor = DEFAULT_FLOOR_COLOR; }
 		
-		int nbSnakePl = BASE_NB_SNAKE_PLAYER;
-		if (prop.get(PROP_NB_SNAKE_PLAYER) != null) { nbSnakePl = (Integer)prop.get(PROP_NB_SNAKE_PLAYER); }
+		int nbSnakePl = DEFAULT_NB_SNAKE_PLAYER;
+		if (properties.get(PROP_NB_SNAKE_PLAYER) != null) { nbSnakePl = (Integer)properties.get(PROP_NB_SNAKE_PLAYER); }
 		if (nbSnakePl < 1) { nbSnakePl = 1; }
 		
-		int nbSnakeIA = BASE_NB_SNAKE_IA;
-		if (prop.get(PROP_NB_SNAKE_IA) != null) { nbSnakeIA = (Integer)prop.get(PROP_NB_SNAKE_IA); }
+		int nbSnakeIA = DEFAULT_NB_SNAKE_IA;
+		if (properties.get(PROP_NB_SNAKE_IA) != null) { nbSnakeIA = (Integer)properties.get(PROP_NB_SNAKE_IA); }
 		if (nbSnakeIA < 0) { nbSnakeIA = 0; }
 		
 		
@@ -103,6 +100,15 @@ public class MyEnv extends EnvironmentDescription
 
 	static void restart()
 	{
+		restart(new Properties());
+	}
+
+	static void restart(Properties prop)
+	{
+		for (Object key : prop.keySet())
+		{
+			properties.put(key, prop.get(key));
+		}
 		frame.restart(new MyEnv());
 	}
 }
