@@ -17,7 +17,7 @@ public class MyEnv extends EnvironmentDescription
 	public static String PROP_WORLDSIZE = "worldSize";
 	public static String PROP_FLOOR_COLOR = "floorColor";
 	
-	private static int DEFAULT_NB_SNAKE_PLAYER = 2;
+	private static int DEFAULT_NB_SNAKE_PLAYER = 1;
 	private static int DEFAULT_NB_SNAKE_IA = 0;
 	private static float DEFAULT_WORLDSIZE = 20f;
 	private static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
