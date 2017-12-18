@@ -2,6 +2,10 @@ package Snake;
 
 import javax.vecmath.Vector3d;
 
+import Snake.Fruit.Fruit;
+
+import simbad.sim.SimpleAgent;
+
 public class SnakeHead extends SnakePart
 {	
 	private SnakePart last;
@@ -72,17 +76,17 @@ public class SnakeHead extends SnakePart
 				/* ****** */
 			}
 			
-			if ((getCounter() % 100) == 0)
-			{
-				getSnake().grow();
-			}
+//			if ((getCounter() % 100) == 0)
+//			{
+//				getSnake().grow();
+//			}
 
 			if (anOtherAgentIsVeryNear())
 			{
-//				if (getVeryNearAgent() instanceof Fruit)
-//				{
-//					((Fruit) getVeryNearAgent).eat(this);
-//				}
+				if (getVeryNearAgent() instanceof Fruit)
+				{
+					((Fruit) getVeryNearAgent()).eat(this);
+				}
 			}
 			
 			SnakePart collision = Snake.collideWithSnake(this);

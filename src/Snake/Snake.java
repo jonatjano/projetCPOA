@@ -51,7 +51,7 @@ public class Snake
 		livingSnakes.add(this);
 	}
 
-	void grow()
+	public void grow()
 	{
 		SnakeBody newBody = (SnakeBody) env.nextStock();
 		if (last == head) { head.setPartLink(newBody); }
@@ -103,6 +103,11 @@ public class Snake
 	public boolean isPlayerControlled()
 	{
 		return isPlayerControlled;
+	}
+	
+	public MyEnv getEnv()
+	{
+		return env;
 	}
 
 	public static SnakePart collideWithSnake(SnakePart askingPart)

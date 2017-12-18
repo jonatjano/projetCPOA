@@ -6,6 +6,8 @@ import java.util.Properties;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
 
+import Snake.Fruit.GrowFruit;
+
 import simbad.gui.Simbad;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Wall;
@@ -17,10 +19,12 @@ public class MyEnv extends EnvironmentDescription
 	public static String PROP_WORLDSIZE = "worldSize";
 	public static String PROP_FLOOR_COLOR = "floorColor";
 	
-	private static int DEFAULT_NB_SNAKE_PLAYER = 1;
+	private static int DEFAULT_NB_SNAKE_PLAYER = 2;
 	private static int DEFAULT_NB_SNAKE_IA = 0;
 	private static float DEFAULT_WORLDSIZE = 20f;
 	private static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
+	
+	private static double STOCK_HEIGHT = 100;
 	
 	private static Properties properties = new Properties();
 	
@@ -52,6 +56,7 @@ public class MyEnv extends EnvironmentDescription
 		if (nbSnakeIA < 0) { nbSnakeIA = 0; }
 		
 		
+		setUsePhysics(false);
 		
 		Wall w1 = new Wall(new Vector3d(worldSize / 2, 0, 0), worldSize, 1, this);
 		w1.rotate90(1);
@@ -63,7 +68,6 @@ public class MyEnv extends EnvironmentDescription
 		add(w3);
 		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 1, this);
 		add(w4);
-		
 
 		for (int i = 0; i < nbSnakePl; i++)
 		{
@@ -75,14 +79,19 @@ public class MyEnv extends EnvironmentDescription
 			new Snake(this, new Vector3d(0, 0, -(i + 1)), false);
 		}
 
-		stock = new SnakeBody(new Vector3d(0, Math.random() * 10 + 100, 0), null);
+		stock = new SnakeBody(new Vector3d(0, STOCK_HEIGHT, 0), null);
 		add(stock);
 		for (int i = 0; i < Math.pow(worldSize * 2, 2); i++)
 		{
-			SnakePart nextStock = new SnakeBody(new Vector3d(0, Math.random() * 10 + 100, 0), null);
+			SnakePart nextStock = new SnakeBody(new Vector3d(0, STOCK_HEIGHT, 0), null);
 			nextStock.setPartLink(stock);
 			stock = nextStock;
 			add(stock);
+		}
+		
+		for (int i = 0; i < nbSnakePl + nbSnakeIA; i++)
+		{
+			add(new GrowFruit(new Vector3d((-0.5 + Math.random()) * (worldSize - 1), 0, (-0.5 + Math.random()) * (worldSize - 1)), "grow" + i));
 		}
 	}
 

@@ -479,7 +479,7 @@ public  class World   {
         mouseOrbiter.resetView();
         switch (type) {
         case VIEW_FROM_TOP:
-            t1.lookAt(new Point3d(0, worldSize * 1.2, 0),
+            t1.lookAt(new Point3d(0, worldSize * 1.3, 0),
                     new Point3d(0, 0, 0), new Vector3d(0, 0, -1));
             t1.invert();
             viewTransformGroup.setTransform(t1);

@@ -32,7 +32,7 @@ public abstract class SnakePart extends Agent
 		}
 	}
 	
-	Snake getSnake()
+	public Snake getSnake()
 	{
 		return snake;
 	}
