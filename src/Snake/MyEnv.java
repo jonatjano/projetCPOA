@@ -56,12 +56,12 @@ public class MyEnv extends EnvironmentDescription
 		Wall w1 = new Wall(new Vector3d(worldSize / 2, 0, 0), worldSize, 1, this);
 		w1.rotate90(1);
 		add(w1);
-		Wall w2 = new Wall(new Vector3d(-worldSize / 2, 0, 0), worldSize, 2, this);
+		Wall w2 = new Wall(new Vector3d(-worldSize / 2, 0, 0), worldSize, 1, this);
 		w2.rotate90(1);
 		add(w2);
 		Wall w3 = new Wall(new Vector3d(0, 0, worldSize / 2), worldSize, 1, this);
 		add(w3);
-		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 2, this);
+		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 1, this);
 		add(w4);
 		
 

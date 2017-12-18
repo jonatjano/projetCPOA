@@ -96,7 +96,6 @@ public class Snake
 			{
 				System.out.println("tout le monde est mort");
 			}
-            simulator.stopSimulation();
             MyEnv.restart();
 		}
 	}
