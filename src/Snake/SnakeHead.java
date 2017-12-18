@@ -20,16 +20,13 @@ public class SnakeHead extends SnakePart
 	public void initBehavior()
 	{
 		super.initBehavior();
-		setTranslationalVelocity(0.5);
+		setTranslationalVelocity(0.75);
 	}
 
 	public void performBehavior()
 	{
-//		setRotationalVelocity(1);
 		if (getCounter() > 10)
-		{
-			super.performBehavior();
-			
+		{			
 			if (getCounter() == 11)
 			{
 				getSnake().grow();
@@ -38,11 +35,6 @@ public class SnakeHead extends SnakePart
 			{
 				getSnake().grow();
 			}
-			
-			/*if ((getCounter() % 50) == 0)
-			{
-				setRotationalVelocity((-0.5 + Math.random()) * 2);
-			}*/
 
 			if (getSnake().isPlayerControlled())
 			{
@@ -93,14 +85,17 @@ public class SnakeHead extends SnakePart
 			SnakePart collision = Snake.collideWithSnake(this);
 			if (collision != null)
 			{
-				System.out.println("collision de la tête avec : " + collision);
-				last.kill();
+				if (collision.getName().startsWith("head"))
+				{
+					collision.getSnake().kill(simulator, false);
+				}
+				getSnake().kill(simulator);
+				
 			}
 
 			if (collisionDetected())
 			{
-				System.out.println("collision de la tête avec un mur");
-				last.kill();
+				getSnake().kill(simulator);
 			}
 		}
 	}

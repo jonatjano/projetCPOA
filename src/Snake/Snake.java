@@ -8,6 +8,8 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import simbad.sim.Simulator;
+
 /**
  * @author jonatjano
  * @version 2017-12-07
@@ -16,6 +18,8 @@ public class Snake
 {
 	private static List<SnakePart> inGameSnakeParts = new ArrayList<SnakePart>();
 	private static List<Color3f> usedColors = new ArrayList<Color3f>();
+	
+	private static List<Snake> livingSnakes = new ArrayList<Snake>();
 	
 	private SnakeHead head;
 	private SnakePart last;
@@ -34,6 +38,7 @@ public class Snake
 		head.setPartLink(last);
 		env.add(head);
 		
+		inGameSnakeParts.add(head);
 		do
 		{
 			color = new Color3f((float) Math.random(), (float) Math.random(), (float) Math.random());
@@ -43,6 +48,7 @@ public class Snake
 		head.setColor(color);
 		
 		isPlayerControlled = playerControlled;
+		livingSnakes.add(this);
 	}
 
 	void grow()
@@ -69,6 +75,36 @@ public class Snake
 		newBody.translateTo(v3d);
 		newBody.rotateY(rotation);
 	}
+	
+	public void kill(Simulator simulator)
+	{
+		kill(simulator, true);
+	}
+	
+	public void kill(Simulator simulator, boolean canEndGame)
+	{
+		livingSnakes.remove(this);
+		last.kill();
+		if (livingSnakes.size() <= 1 && canEndGame)
+		{
+			if (livingSnakes.size() == 1)
+			{
+				// TODO dans une popup?
+				System.out.println(livingSnakes.get(0).head.getName() + " à gagné");
+			}
+			else
+			{
+				System.out.println("tout le monde est mort");
+			}
+            simulator.stopSimulation();
+            MyEnv.restart();
+		}
+	}
+	
+	public boolean isPlayerControlled()
+	{
+		return isPlayerControlled;
+	}
 
 	public static SnakePart collideWithSnake(SnakePart askingPart)
 	{
@@ -79,7 +115,7 @@ public class Snake
 		
 		for (SnakePart sp : inGameSnakeParts)
 		{
-			if (!(sp.getLinked() == askingPart) && !(askingPart.getLinked() == sp))
+			if (!(sp.getLinked() == askingPart) && !(askingPart.getLinked() == sp) && sp != askingPart)
 			{
 				sp.getCoords(coordSp);
 				
@@ -92,14 +128,9 @@ public class Snake
 		return null;
 	}
 	
-	public boolean isPlayerControlled()
-	{
-		return isPlayerControlled;
-	}
-	
 	public static void emptyInGameList()
 	{
 		inGameSnakeParts.clear();
-		System.out.println(inGameSnakeParts.size());
+		livingSnakes.clear();
 	}
 }

@@ -59,19 +59,12 @@ public abstract class SnakePart extends Agent
 	
 	void kill()
 	{
-		System.out.println(getName() + " killed");
-
 		Vector3d v3d = getVector3d();
 		v3d.setY(100);
 		translateTo(v3d);
 		if(!getName().startsWith("head"))
 		{
 			getLinked().kill();
-		}
-		else 
-		{
-            simulator.stopSimulation();
-            MyEnv.restart();
 		}
 	}
 	
