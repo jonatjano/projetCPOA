@@ -21,7 +21,7 @@ public class MyEnv extends EnvironmentDescription
 	
 	private static int DEFAULT_NB_SNAKE_PLAYER = 2;
 	private static int DEFAULT_NB_SNAKE_IA = 0;
-	private static float DEFAULT_WORLDSIZE = 20f;
+	private static float DEFAULT_WORLDSIZE = 15f;
 	private static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
 	
 	private static double STOCK_HEIGHT = 100;
@@ -81,7 +81,7 @@ public class MyEnv extends EnvironmentDescription
 
 		stock = new SnakeBody(new Vector3d(0, STOCK_HEIGHT, 0), null);
 		add(stock);
-		for (int i = 0; i < Math.pow(worldSize * 2, 2); i++)
+		for (int i = 0; i < Math.pow(worldSize, 2); i++)
 		{
 			SnakePart nextStock = new SnakeBody(new Vector3d(0, STOCK_HEIGHT, 0), null);
 			nextStock.setPartLink(stock);
@@ -118,6 +118,9 @@ public class MyEnv extends EnvironmentDescription
 		{
 			properties.put(key, prop.get(key));
 		}
-		frame.restart(new MyEnv());
+		frame.releaseRessources();
+		frame.dispose();
+		frame = new Simbad(new MyEnv(), false);
+		Runtime.getRuntime().gc();
 	}
 }

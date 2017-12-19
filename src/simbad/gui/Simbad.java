@@ -107,7 +107,7 @@ public class Simbad extends JFrame implements ActionListener {
     }
     
     /** Release all ressources. */
-    private void releaseRessources(){
+    public void releaseRessources(){
         simulator.dispose();
         world.dispose();
         disposeInternalFrames();
@@ -117,11 +117,6 @@ public class Simbad extends JFrame implements ActionListener {
      * restart with a new {@link EnvironmentDescription}
      * @param ed the new {@link EnvironmentDescription} to use
      */
-    public void restart(EnvironmentDescription ed)
-    {
-    	releaseRessources();
-    	start(ed);
-    }
 
     /**
      * Creates the windows as Swing InternalFrames

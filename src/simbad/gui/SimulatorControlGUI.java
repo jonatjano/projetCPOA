@@ -158,37 +158,9 @@ public class SimulatorControlGUI extends JPanel implements ActionListener, KeyLi
 		{
 			simulator.restartSimulation();
 		}
-		else if (action.equals("tf0.2"))
+		else if (action.startsWith("tf"))
 		{
-			simulator.setVirtualTimeFactor(0.2f);
-		}
-		else if (action.equals("tf0.5"))
-		{
-			simulator.setVirtualTimeFactor(0.5f);
-		}
-		else if (action.equals("tf1.0"))
-		{
-			simulator.setVirtualTimeFactor(1.0f);
-		}
-		else if (action.equals("tf2.0"))
-		{
-			simulator.setVirtualTimeFactor(2.0f);
-		}
-		else if (action.equals("tf5.0"))
-		{
-			simulator.setVirtualTimeFactor(5.0f);
-		}
-		else if (action.equals("tf10.0"))
-		{
-			simulator.setVirtualTimeFactor(10.0f);
-		}
-		else if (action.equals("tf20.0"))
-		{
-			simulator.setVirtualTimeFactor(20.0f);
-		}
-		else if (action.equals("tf50.0"))
-		{
-			simulator.setVirtualTimeFactor(50.0f);
+			simulator.setVirtualTimeFactor(Float.parseFloat(action.substring(2)));
 		}
 		else if (action.equals("step1"))
 		{
