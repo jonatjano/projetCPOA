@@ -30,7 +30,7 @@ public class MyEnv extends EnvironmentDescription
 	public static int DEFAULT_NB_SNAKE_IA = 0;
 	public static int DEFAULT_WORLDSIZE = 15;
 	public static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0.7f, 0.7f, 0.7f);
-	public static float DEFAULT_SPEED = 3f;
+	public static int DEFAULT_SPEED = 3;
 	
 	private static double STOCK_HEIGHT = 100;
 	

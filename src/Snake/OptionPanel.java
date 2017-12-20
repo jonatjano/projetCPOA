@@ -238,7 +238,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			prop.put(MyEnv.PROP_WORLDSIZE, worldSizeSlide.getValue());
 			prop.put(MyEnv.PROP_NB_SNAKE_PLAYER, NbPlayerSlide.getValue());
 			prop.put(MyEnv.PROP_NB_SNAKE_IA, NbIASlide.getValue());
-			prop.put(MyEnv.PROP_SPEED, (float) speedSlide.getValue());
+			prop.put(MyEnv.PROP_SPEED, speedSlide.getValue());
 			
 			for (int i = 0; i < MAX_SNAKE; i++)
 			{

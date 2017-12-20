@@ -83,7 +83,7 @@ public class SimulatorControlGUI extends JPanel implements ActionListener, KeyLi
 	{
 		if (MyEnv.getProperties().get(MyEnv.PROP_SPEED) != null)
 		{
-			simulator.setVirtualTimeFactor((float) MyEnv.getProperties().get(MyEnv.PROP_SPEED));
+			simulator.setVirtualTimeFactor(new Float((int)MyEnv.getProperties().get(MyEnv.PROP_SPEED)));
 		}
 		else
 		{
