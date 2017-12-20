@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -15,19 +16,26 @@ import java.util.Properties;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.vecmath.Color3f;
+
+import Snake.KeyController.Side;
 
 
 public class OptionPanel extends JPanel implements ChangeListener, ActionListener
 {
 	private int MAX_SNAKE = 8;
 	private int MIN_WORLDSIZE = 10;
-	private int MAX_WORLDSIZE = 30;
+	private int MAX_WORLDSIZE = 25;
 	private int MIN_SPEED = 1;
 	private int MAX_SPEED = 5;
 
@@ -127,10 +135,10 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		/**
 		 * TODO enlever les // une fois que l'ia fonctionne
 		 */
-		add(new JLabel(" "));
+//		add(new JLabel(" "));
 		JLabel NbIALab = new JLabel("Nombre de serpents controllé par l'ordinateur");
 		NbIALab.setAlignmentX(CENTER_ALIGNMENT);
-		add(NbIALab);
+//		add(NbIALab);
 
 		if (prop.get(MyEnv.PROP_NB_SNAKE_IA) != null)
 		{
@@ -145,8 +153,8 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		NbIASlide.setPaintTicks(true);
 		NbIASlide.setPaintLabels(true);
 		NbIASlide.setAlignmentX(CENTER_ALIGNMENT);
-		add(NbIASlide);
-		add(new JLabel(" "));
+//		add(NbIASlide);
+//		add(new JLabel(" "));
 
 		add(new JLabel(" "));
 		JLabel snakeOptionLab = new JLabel("Options des serpents");
@@ -177,7 +185,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		snakePanList.get(0).setVisible(true);
 
 		add(new JLabel(" "));
-		
+
 		JButton confirm = new JButton("Confirmer");
 		confirm.addActionListener(this);
 		add(confirm);
@@ -216,7 +224,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			int id = -1;
 			try
 			{
-				id = Integer.parseInt(((JButton)e.getSource()).getName());
+				id = Integer.parseInt(((JButton) e.getSource()).getName());
 				for (int i = 0; i < MAX_SNAKE; i++)
 				{
 					if (i == id)
@@ -230,7 +238,8 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 				}
 			}
 			catch (Exception e2)
-			{}
+			{
+			}
 		}
 		else if (src.getText().equals("Confirmer"))
 		{
@@ -239,35 +248,44 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			prop.put(MyEnv.PROP_NB_SNAKE_PLAYER, NbPlayerSlide.getValue());
 			prop.put(MyEnv.PROP_NB_SNAKE_IA, NbIASlide.getValue());
 			prop.put(MyEnv.PROP_SPEED, speedSlide.getValue());
-			
+
 			for (int i = 0; i < MAX_SNAKE; i++)
 			{
-				snakeColor.get(i).set(snakePanList.get(i).colorS);	
+				snakeColor.get(i).set(snakePanList.get(i).colorS);
 			}
-			
+
 			MyEnv.setProperties(prop);
 			MyEnv.setPanel(new MainPanel());
 		}
 	}
 
-	private class SnakeOptionPan extends JPanel
+	private class SnakeOptionPan extends JPanel implements ActionListener, IUpdateKey
 	{
 		public Color colorS;
-		
+
+		private int keyCodeMoveLeft;
+		private int keyCodeMoveRight;
+
+		private JButton leftKeyBut;
+		private JButton rightKeyBut;
+		private JButton lastSideButtonClicked;
+
 		public SnakeOptionPan(int snakeId)
 		{
 			setLayout(new BorderLayout());
 
 			add(new JLabel("Option du serpent " + (snakeId + 1), JLabel.CENTER), BorderLayout.NORTH);
-			
+
 			JPanel labPan = new JPanel(new GridLayout(2, 3));
-			
+
 			labPan.add(new JLabel("Tourner à gauche", JLabel.CENTER));
 			labPan.add(new JLabel("Couleur du serpent", JLabel.CENTER));
 			labPan.add(new JLabel("Tourner à droite", JLabel.CENTER));
 
-			JButton leftKeyBut = new JButton(KeyEvent.getKeyText(KeyController.getControl("head" + snakeId + "Left")));
-			labPan.add(leftKeyBut);
+			this.leftKeyBut = new JButton(KeyEvent.getKeyText(KeyController.getControl("head" + snakeId + "Left")));
+			this.leftKeyBut.setName("head" + snakeId + "Left");
+			this.leftKeyBut.addActionListener(this);
+			labPan.add(this.leftKeyBut);
 
 			final JButton color = new JButton();
 			color.setBackground(new Color(snakeColor.get(snakeId).x, snakeColor.get(snakeId).y, snakeColor.get(snakeId).z));
@@ -289,13 +307,107 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			color.addActionListener(actionListener);
 			labPan.add(color);
 
-			JButton rightKeyBut = new JButton(KeyEvent.getKeyText(KeyController.getControl("head" + snakeId + "Right")));
-			labPan.add(rightKeyBut);
-			
+			this.rightKeyBut = new JButton(KeyEvent.getKeyText(KeyController.getControl("head" + snakeId + "Right")));
+			this.rightKeyBut.setName("head" + snakeId + "Right");
+			this.rightKeyBut.addActionListener(this);
+			labPan.add(this.rightKeyBut);
+
 			add(labPan, BorderLayout.CENTER);
-			
+
 			add(new JLabel("                                          "), BorderLayout.WEST);
 			add(new JLabel("                                          "), BorderLayout.EAST);
+
+			// Initialisation des méthodes de l'interface permettant le changement des touches
+			this.keyCodeMoveLeft = KeyController.getControl("head" + snakeId + "Left");
+			this.keyCodeMoveRight = KeyController.getControl("head" + snakeId + "Right");
+			this.lastSideButtonClicked = null;
 		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			this.lastSideButtonClicked = (JButton) e.getSource();
+			if (this.lastSideButtonClicked == this.leftKeyBut)
+			{
+				new SnakeOptionChangeKey(this, MyEnv.frame);
+			}
+			else if (this.lastSideButtonClicked == this.rightKeyBut)
+			{
+				new SnakeOptionChangeKey(this, MyEnv.frame);
+			}
+		}
+
+		@Override
+		public void onKeyUpdate(int keyCode)
+		{
+			if (this.lastSideButtonClicked != null)
+			{
+				KeyController.setControl(this.lastSideButtonClicked.getName(), keyCode);
+				lastSideButtonClicked.setText(KeyEvent.getKeyText(keyCode));
+			}
+		}
+
+		@Override
+		public int getActualKey()
+		{
+			if (this.lastSideButtonClicked != null)
+			{
+				return KeyController.getControl(this.lastSideButtonClicked.getName());
+			}
+			return 0;
+		}
+	}
+
+	private interface IUpdateKey
+	{
+		public void onKeyUpdate(int keyCode);
+
+		public int getActualKey();
+	}
+
+	private class SnakeOptionChangeKey
+	{
+
+		private IUpdateKey iUpdateKey;
+
+		public SnakeOptionChangeKey(IUpdateKey iUpdateKey, JFrame frame)
+		{
+			this.iUpdateKey = iUpdateKey;
+
+			JOptionPane optionPane = new JOptionPane();
+			JTextField field = getField();
+			optionPane.setMessage(new Object[] {"Type something: ", field});
+			optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
+			optionPane.setOptionType(JOptionPane.DEFAULT_OPTION);
+			JDialog dialog = optionPane.createDialog(frame, "Choisir une touche");
+			dialog.setVisible(true);
+		}
+		
+		private JTextField getField() {
+		    final JTextField field = new JTextField();
+		    field.addKeyListener(new KeyListener() {
+
+		        @Override
+		        public void keyTyped(KeyEvent keyEvent) {
+
+		        }
+
+		        @Override
+		        public void keyPressed(KeyEvent keyEvent) {
+		        	if (iUpdateKey != null)
+					{
+						iUpdateKey.onKeyUpdate(keyEvent.getKeyCode());
+						JOptionPane.getRootFrame().dispose();
+					}
+		        }
+
+		        @Override
+		        public void keyReleased(KeyEvent keyEvent) {
+					field.setText(field.getText().substring(field.getText().length() - 1));
+		        }
+		    });
+		    return field;
+		}
+
 	}
 }

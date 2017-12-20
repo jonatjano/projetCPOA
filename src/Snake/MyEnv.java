@@ -18,26 +18,97 @@ import simbad.sim.EnvironmentDescription;
 import simbad.sim.Wall;
 import Snake.Fruit.GrowFruit;
 
+/**
+ * classe environnement c'est aussi elle qui gere la fenetre
+ * @author jonathan
+ */
 public class MyEnv extends EnvironmentDescription
 {
+	/**
+	 * nom de la propriété : nombre de joueurs
+	 * @see DEFAULT_NB_SNAKE_PLAYER
+	 * @see properties
+	 */
 	public static String PROP_NB_SNAKE_PLAYER = "nbSnakePl";
+	/**
+	 * nom de la propriété : nombre d'IA
+	 * @see DEFAULT_NB_SNAKE_IA
+	 * @see properties
+	 */
 	public static String PROP_NB_SNAKE_IA = "nbSnakeIA";
+	/**
+	 * nom de la propriété : taille du monde
+	 * @see DEFAULT_WORLDSIZE
+	 * @see properties
+	 */
 	public static String PROP_WORLDSIZE = "worldSize";
+	/**
+	 * nom de la propriété : couleur du sol
+	 * @see DEFAULT_FLOOR_COLOR
+	 * @see properties
+	 */
 	public static String PROP_FLOOR_COLOR = "floorColor";
+	/**
+	 * nom de la propriété : multiplicateur de vitesse
+	 * @see DEFAULT_SPEED
+	 * @see properties
+	 */
 	public static String PROP_SPEED = "speed";
 	
+	/**
+	 * valeur par defaut de la propriété : nombre de joueurs
+	 * @see PROP_NB_SNAKE_PLAYER
+	 * @see properties
+	 */
 	public static int DEFAULT_NB_SNAKE_PLAYER = 2;
+	/**
+	 * valeur par defaut de la propriété : nombre d'IA
+	 * @see PROP_NB_SNAKE_IA
+	 * @see properties
+	 */
 	public static int DEFAULT_NB_SNAKE_IA = 0;
+	/**
+	 * valeur par defaut de la propriété : taille du monde
+	 * @see PROP_WORLDSIZE
+	 * @see properties
+	 */
 	public static int DEFAULT_WORLDSIZE = 15;
+	/**
+	 * valeur par defaut de la propriété : couleur du sol
+	 * @see PROP_FLOOR_COLOR
+	 * @see properties
+	 */
 	public static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0.7f, 0.7f, 0.7f);
+	/**
+	 * valeur par defaut de la propriété : multiplicateur de vitesse
+	 * @see PROP_SPEED
+	 * @see properties
+	 */
 	public static int DEFAULT_SPEED = 3;
 	
+	/**
+	 * hauteur à laquel sont placé les robots de stock (créer mais pas encore en jeu)
+	 */
 	private static double STOCK_HEIGHT = 100;
 	
+	/**
+	 * les propriétés qui sont utilisé à la création de l'environnement
+	 * @see PROP_NB_SNAKE_PLAYER
+	 * @see PROP_NB_SNAKE_IA
+	 * @see PROP_WORLDSIZE
+	 * @see PROP_FLOOR_COLOR
+	 * @see PROP_SPEED
+	 */
 	private static Properties properties = new Properties();
 	
+	/**
+	 * frame principale de l'application
+	 */
 	static JFrame frame;
 	
+	/**
+	 * le prochain robot à être mis en jeu
+	 */
 	private SnakePart stock;
 
 	public MyEnv()
@@ -126,7 +197,7 @@ public class MyEnv extends EnvironmentDescription
 		
 		KeyController.initControls();
 		
-		frame.add(new MainPanel());
+		frame.add(new HelpPanel());
 		
 		frame.setVisible(true);
 	}
@@ -146,6 +217,7 @@ public class MyEnv extends EnvironmentDescription
 	
 	public static void setPanel(Container cpn)
 	{
+		
 		frame.setContentPane(cpn);
 		SwingUtilities.updateComponentTreeUI(frame);
 	}

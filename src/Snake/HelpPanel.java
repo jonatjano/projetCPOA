@@ -49,7 +49,7 @@ public class HelpPanel extends JPanel implements ActionListener
 		infoLab = new JLabel(" ",JLabel.CENTER);
 		add(infoLab);
 		
-		JButton retButton = new JButton("retour");
+		JButton retButton = new JButton("Continuer");
 		retButton.addActionListener(this);
 		add(retButton);
 		

@@ -6,6 +6,12 @@ import java.util.Map;
 
 public abstract class KeyController
 {	
+	/**
+	 * Côté lié à la touche
+	 *
+	 */
+	public enum Side { LEFT, RIGHT };
+	
 	private static Map<Integer, Boolean> keysState = new HashMap<Integer, Boolean>();
 	
 	public static boolean isPressed(Integer key)
@@ -19,10 +25,6 @@ public abstract class KeyController
 		keysState.put(key, state);
 	}
 	
-	
-	
-	
-	
 	private static Map<String, Integer> controls;
 	
 	public static Integer getControl(String key)
@@ -34,6 +36,11 @@ public abstract class KeyController
 	public static void setControl(String key, Integer value)
 	{
 		controls.put(key, value);
+	}
+	
+	public static void setControl(int headId, Side side, Integer value)
+	{
+		setControl("head" + headId + ((side == Side.LEFT) ? "Left" : "Right"), value);
 	}
 	
 	public static boolean initControls()
