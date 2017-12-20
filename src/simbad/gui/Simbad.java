@@ -25,6 +25,7 @@
 
 package simbad.gui;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,7 +51,7 @@ import simbad.sim.World;
  * This is the Simbad application mainframe.
  *  
  */
-public class Simbad extends JFrame implements ActionListener {
+public class Simbad extends JInternalFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -81,9 +82,8 @@ public class Simbad extends JFrame implements ActionListener {
         setSize(SIZEX, SIZEY);
         createGUI();
         start(ed);
-        setVisible(true);
-       
-          }
+        setVisible(true);        
+	}
  
 
     /** Create the main GUI. Only called once.*/

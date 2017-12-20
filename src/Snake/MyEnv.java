@@ -1,16 +1,22 @@
 package Snake;
 
-import java.util.Iterator;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Properties;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
-
-import Snake.Fruit.GrowFruit;
 
 import simbad.gui.Simbad;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Wall;
+import Snake.Fruit.GrowFruit;
 
 public class MyEnv extends EnvironmentDescription
 {
@@ -18,30 +24,32 @@ public class MyEnv extends EnvironmentDescription
 	public static String PROP_NB_SNAKE_IA = "nbSnakeIA";
 	public static String PROP_WORLDSIZE = "worldSize";
 	public static String PROP_FLOOR_COLOR = "floorColor";
+	public static String PROP_SPEED = "speed";
 	
-	private static int DEFAULT_NB_SNAKE_PLAYER = 2;
-	private static int DEFAULT_NB_SNAKE_IA = 0;
-	private static float DEFAULT_WORLDSIZE = 15f;
-	private static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0f, 1f, 0f);
+	public static int DEFAULT_NB_SNAKE_PLAYER = 2;
+	public static int DEFAULT_NB_SNAKE_IA = 0;
+	public static int DEFAULT_WORLDSIZE = 15;
+	public static Color3f DEFAULT_FLOOR_COLOR = new Color3f(0.7f, 0.7f, 0.7f);
+	public static float DEFAULT_SPEED = 3f;
 	
 	private static double STOCK_HEIGHT = 100;
 	
 	private static Properties properties = new Properties();
 	
-	private static Simbad frame;
+	static JFrame frame;
 	
 	private SnakePart stock;
 
 	public MyEnv()
-	{
-		KeyController.initControls();
+	{		
 		
+		KeyController.initControls();
 		SnakePart.resetCounter();
 		Snake.emptyInGameList();
 		
 		worldSize = DEFAULT_WORLDSIZE;
-		if (properties.get(PROP_WORLDSIZE) != null) { worldSize = (Float)properties.get(PROP_WORLDSIZE); }
-		if (worldSize < 5.0f || worldSize > 30.0f) { worldSize = 20.0f; }
+		if (properties.get(PROP_WORLDSIZE) != null) { worldSize = new Float((int)properties.get(PROP_WORLDSIZE)); }
+		if (worldSize < 10.0f || worldSize > 30.0f) { worldSize = 20.0f; }
 		
 		floorColor = DEFAULT_FLOOR_COLOR;
 		if (properties.get(PROP_FLOOR_COLOR) != null) { floorColor = (Color3f)properties.get(PROP_FLOOR_COLOR); }
@@ -104,23 +112,41 @@ public class MyEnv extends EnvironmentDescription
 	
 	public static void main(String[] args)
 	{
-		frame = new Simbad(new MyEnv() ,false);
+		frame = new JFrame("Snake");
+		frame.setLayout(new BorderLayout());
+		frame.setSize(800, 700);
+		
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		WindowListener exitListener = new WindowAdapter() {
+		    public void windowClosing(WindowEvent e) {
+	           System.exit(0);
+		    }
+		};
+		frame.addWindowListener(exitListener);
+		
+		KeyController.initControls();
+		
+		frame.add(new MainPanel());
+		
+		frame.setVisible(true);
 	}
 
-	static void restart()
-	{
-		restart(new Properties());
-	}
-
-	static void restart(Properties prop)
+	static void setProperties(Properties prop)
 	{
 		for (Object key : prop.keySet())
 		{
 			properties.put(key, prop.get(key));
 		}
-		frame.releaseRessources();
-		frame.dispose();
-		frame = new Simbad(new MyEnv(), false);
-		Runtime.getRuntime().gc();
+	}
+	
+	public static Properties getProperties()
+	{
+		return (Properties) properties.clone();
+	}
+	
+	public static void setPanel(Container cpn)
+	{
+		frame.setContentPane(cpn);
+		SwingUtilities.updateComponentTreeUI(frame);
 	}
 }

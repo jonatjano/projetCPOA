@@ -6,12 +6,12 @@ import Snake.Fruit.Fruit;
 
 import simbad.sim.SimpleAgent;
 
-public class SnakeHead extends SnakePart
+public abstract class SnakeHead extends SnakePart
 {	
 	private SnakePart last;
 	private static int count = 0;
 	
-	private double vitesse = 1.0;
+	protected double vitesse = 1.0;
 	
 	public SnakeHead(Vector3d position, Snake snake)
 	{
@@ -28,6 +28,8 @@ public class SnakeHead extends SnakePart
 		super.initBehavior();
 		setTranslationalVelocity(vitesse);
 	}
+	
+	public abstract void behavior();
 
 	public void performBehavior()
 	{
@@ -43,43 +45,7 @@ public class SnakeHead extends SnakePart
 				getSnake().grow();
 			}
 
-			if (getSnake().isPlayerControlled())
-			{
-				if (KeyController.isPressed(KeyController.getControl(getName() + "Left")))
-				{
-					rotateY(vitesse / 12);
-				}
-				if (KeyController.isPressed(KeyController.getControl(getName() + "Right")))
-				{
-					rotateY(-vitesse / 12);
-				}
-			}
-			else
-			{
-				/* ******** */
-				/* DEBUT IA */
-				/* ******** */
-				
-				// TODO IA pour les bots serpents
-				if ((getCounter() % 100) == 0)
-				{
-					setRotationalVelocity(-Math.PI);
-				}
-				
-				if ((getCounter() % 101) == 0)
-				{
-					setRotationalVelocity(0);
-				}
-				
-				/* ****** */
-				/* FIN IA */
-				/* ****** */
-			}
-			
-//			if ((getCounter() % 100) == 0)
-//			{
-//				getSnake().grow();
-//			}
+			behavior();
 
 			if (anOtherAgentIsVeryNear())
 			{

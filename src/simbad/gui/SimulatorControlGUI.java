@@ -43,6 +43,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import Snake.KeyController;
+import Snake.MainPanel;
+import Snake.MyEnv;
 
 import simbad.sim.Agent;
 import simbad.sim.Simulator;
@@ -79,6 +81,15 @@ public class SimulatorControlGUI extends JPanel implements ActionListener, KeyLi
 
 	void createGUI()
 	{
+		if (MyEnv.getProperties().get(MyEnv.PROP_SPEED) != null)
+		{
+			simulator.setVirtualTimeFactor((float) MyEnv.getProperties().get(MyEnv.PROP_SPEED));
+		}
+		else
+		{
+			simulator.setVirtualTimeFactor(MyEnv.DEFAULT_SPEED);
+		}
+		
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Simulator"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -87,21 +98,21 @@ public class SimulatorControlGUI extends JPanel implements ActionListener, KeyLi
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
 		createButton(panel1, "run", "run");
 		createButton(panel1, "pause", "pause");
-		createButton(panel1, "reset", "reset");
-		createButton(panel1, "restart", "restart");
-		createButton(panel1, "step", "step1");
+		createButton(panel1, "menu", "menu");
+//		createButton(panel1, "restart", "restart");
+//		createButton(panel1, "step", "step1");
 		add(panel1);
 		// time factor buttons
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
-		createLabel(panel2, "Time Factor");
-		ButtonGroup bgroup = new ButtonGroup();
-		createRadioButton(panel2, bgroup, "0.2", "tf0.2", false);
-		createRadioButton(panel2, bgroup, "0.5", "tf0.5", false);
-		createRadioButton(panel2, bgroup, "1.0", "tf1.0", true);
-		createRadioButton(panel2, bgroup, "5.0", "tf5.0", false);
-		createRadioButton(panel2, bgroup, "10.0", "tf10.0", false);
-		createRadioButton(panel2, bgroup, "20.0", "tf20.0", false);
+//		createLabel(panel2, "Time Factor");
+//		ButtonGroup bgroup = new ButtonGroup();
+//		createRadioButton(panel2, bgroup, "0.2", "tf0.2", false);
+//		createRadioButton(panel2, bgroup, "0.5", "tf0.5", false);
+//		createRadioButton(panel2, bgroup, "1.0", "tf1.0", true);
+//		createRadioButton(panel2, bgroup, "5.0", "tf3.0", false);
+//		createRadioButton(panel2, bgroup, "10.0", "tf10.0", false);
+//		createRadioButton(panel2, bgroup, "20.0", "tf20.0", false);
 
 		add(panel2);
 	}
@@ -149,6 +160,10 @@ public class SimulatorControlGUI extends JPanel implements ActionListener, KeyLi
 		else if (action.equals("pause"))
 		{
 			simulator.stopSimulation();
+		}
+		else if (action.equals("menu"))
+		{
+			MyEnv.setPanel(new MainPanel());
 		}
 		else if (action.equals("reset"))
 		{

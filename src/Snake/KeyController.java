@@ -16,7 +16,6 @@ public abstract class KeyController
 	
 	public static void changeState(Integer key, boolean state)
 	{
-//		System.out.println(key + " " + state);
 		keysState.put(key, state);
 	}
 	
@@ -46,12 +45,33 @@ public abstract class KeyController
 			controls.put("head0Left", KeyEvent.VK_Q);
 			controls.put("head0Right", KeyEvent.VK_D);
 			
-			controls.put("head1Left", KeyEvent.VK_L);
+			controls.put("head1Left", KeyEvent.VK_K);
 			controls.put("head1Right", KeyEvent.VK_M);
 			
-//			System.out.println(KeyEvent.VK_Q + " " + KeyEvent.VK_D);
+			controls.put("head2Left", KeyEvent.VK_NUMPAD4);
+			controls.put("head2Right", KeyEvent.VK_NUMPAD6);
+			
+			controls.put("head3Left", KeyEvent.VK_C);
+			controls.put("head3Right", KeyEvent.VK_B);
+			
+			controls.put("head4Left", KeyEvent.VK_F);
+			controls.put("head4Right", KeyEvent.VK_H);
+			
+			controls.put("head5Left", KeyEvent.VK_A);
+			controls.put("head5Right", KeyEvent.VK_E);
+			
+			controls.put("head6Left", KeyEvent.VK_R);
+			controls.put("head6Right", KeyEvent.VK_Y);
+			
+			controls.put("head7Left", KeyEvent.VK_I);
+			controls.put("head7Right", KeyEvent.VK_P);
 			
 			return true;
+		}
+		
+		for (int key : keysState.keySet())
+		{
+			keysState.put(key, false);
 		}
 		return false;
 	}

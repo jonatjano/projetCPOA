@@ -1,5 +1,6 @@
 package Snake;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,19 +33,21 @@ public class Snake
 	Snake(MyEnv myEnv, Vector3d pos, boolean playerControlled)
 	{
 		env = myEnv;
-		head = new SnakeHead(pos, this);
+		if (playerControlled)
+		{
+			head = new SnakeHeadPlayer(pos, this);
+		}
+		else
+		{
+			head = new SnakeHeadIA(pos, this);
+		}
 		last = head;
 		last.setPartLink(head);
 		head.setPartLink(last);
 		env.add(head);
 		
-		inGameSnakeParts.add(head);
-		do
-		{
-			color = new Color3f((float) Math.random(), (float) Math.random(), (float) Math.random());
-		}
-		while (usedColors.contains(color));
-		usedColors.add(color);
+		color = OptionPanel.getSnakeColor(head.getName());
+		
 		head.setColor(color);
 		
 		isPlayerControlled = playerControlled;
@@ -96,7 +99,7 @@ public class Snake
 			{
 				System.out.println("tout le monde est mort");
 			}
-            MyEnv.restart();
+            MyEnv.setPanel(new MainPanel());
 		}
 	}
 	
@@ -136,5 +139,10 @@ public class Snake
 	{
 		inGameSnakeParts.clear();
 		livingSnakes.clear();
+	}
+	
+	static List<SnakePart> getListPart()
+	{
+		return inGameSnakeParts;
 	}
 }

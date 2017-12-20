@@ -49,7 +49,7 @@ public class ControlWindow extends JInternalFrame {
     	    setContentPane(panel);
     	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     	    panel.add(new WorldControlGUI(world,simulator));
-       	panel.add(new SimulatorControlGUI((JFrame)getParent(),simulator));
+    	    panel.add(new SimulatorControlGUI((JFrame)getParent(),simulator));
     	    pack();
     	}
 }
