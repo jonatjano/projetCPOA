@@ -6,8 +6,10 @@ package Snake;
 import javax.vecmath.Vector3d;
 
 /**
- * @author jonathan
- *
+ * tête des joueur (tourne si les touches liée sont appuyée)
+ * @see SnakeHead
+ * @see SnakeHeadPlayer
+ * @author Jonathan Selle, Adam Bernouy
  */
 public class SnakeHeadPlayer extends SnakeHead
 {

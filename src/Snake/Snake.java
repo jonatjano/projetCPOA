@@ -12,8 +12,8 @@ import javax.vecmath.Vector3d;
 import simbad.sim.Simulator;
 
 /**
- * @author jonatjano
- * @version 2017-12-07
+ * classe gérant un serpent dans sa totalitée, fait le lien entre toutes les part du serpent
+ * @author Jonathan Selle, Adam Bernouy
  */
 public class Snake
 {

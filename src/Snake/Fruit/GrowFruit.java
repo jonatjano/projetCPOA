@@ -8,6 +8,10 @@ import simbad.sim.CherryAgent;
 
 import Snake.SnakeHead;
 
+/**
+ * fruit qui fait grandir
+ * @author Jonathan Selle, Adam Bernouy
+ */
 public class GrowFruit extends Fruit
 {
 

@@ -20,7 +20,7 @@ import Snake.Fruit.GrowFruit;
 
 /**
  * classe environnement c'est aussi elle qui gere la fenetre
- * @author jonathan
+ * @author Jonathan Selle, Adam Bernouy
  */
 public class MyEnv extends EnvironmentDescription
 {
@@ -111,13 +111,21 @@ public class MyEnv extends EnvironmentDescription
 	 */
 	private SnakePart stock;
 
+	/**
+	 * classe définissant l'environnement du jeu
+	 */
 	public MyEnv()
 	{		
-		
+		/*
+		 * on remet toutes les valeurs à 0
+		 */
 		KeyController.initControls();
 		SnakePart.resetCounter();
 		Snake.emptyInGameList();
 		
+		/*
+		 * on défini les variables celon les propriétés
+		 */
 		worldSize = DEFAULT_WORLDSIZE;
 		if (properties.get(PROP_WORLDSIZE) != null) { worldSize = new Float((int)properties.get(PROP_WORLDSIZE)); }
 		if (worldSize < 10.0f || worldSize > 30.0f) { worldSize = 20.0f; }
@@ -134,9 +142,10 @@ public class MyEnv extends EnvironmentDescription
 		if (properties.get(PROP_NB_SNAKE_IA) != null) { nbSnakeIA = (Integer)properties.get(PROP_NB_SNAKE_IA); }
 		if (nbSnakeIA < 0) { nbSnakeIA = 0; }
 		
-		
+		// pour l'utilisation des balles
 		setUsePhysics(false);
 		
+		// on met les murs
 		Wall w1 = new Wall(new Vector3d(worldSize / 2, 0, 0), worldSize, 1, this);
 		w1.rotate90(1);
 		add(w1);
@@ -148,6 +157,7 @@ public class MyEnv extends EnvironmentDescription
 		Wall w4 = new Wall(new Vector3d(0, 0, -worldSize / 2), worldSize, 1, this);
 		add(w4);
 
+		// on creer les serpents
 		for (int i = 0; i < nbSnakePl; i++)
 		{
 			new Snake(this, new Vector3d(0, 0, i), true);
@@ -158,6 +168,7 @@ public class MyEnv extends EnvironmentDescription
 			new Snake(this, new Vector3d(0, 0, -(i + 1)), false);
 		}
 
+		// on creer les stocks pour les serpents (simbad interdit de creer des Robots après le début de la simulation
 		stock = new SnakeBody(new Vector3d(0, STOCK_HEIGHT, 0), null);
 		add(stock);
 		for (int i = 0; i < Math.pow(worldSize, 2); i++)
@@ -168,12 +179,17 @@ public class MyEnv extends EnvironmentDescription
 			add(stock);
 		}
 		
+		// on créer les fruit
 		for (int i = 0; i < nbSnakePl + nbSnakeIA; i++)
 		{
 			add(new GrowFruit(new Vector3d((-0.5 + Math.random()) * (worldSize - 1), 0, (-0.5 + Math.random()) * (worldSize - 1)), "grow" + i));
 		}
 	}
 
+	/**
+	 * permet d'obtenir le dernier stock et passe au prochain
+	 * @return le stock qui doit être rajouté au jeu
+	 */
 	SnakeBody nextStock()
 	{
 		SnakeBody ret = (SnakeBody) stock;
@@ -181,6 +197,10 @@ public class MyEnv extends EnvironmentDescription
 		return ret;
 	}
 	
+	/**
+	 * main appellé
+	 * @param args non utilisés
+	 */
 	public static void main(String[] args)
 	{
 		frame = new JFrame("Snake");
@@ -202,6 +222,10 @@ public class MyEnv extends EnvironmentDescription
 		frame.setVisible(true);
 	}
 
+	/**
+	 * permet de définir les propriétés de la prochaine partie
+	 * @param prop les propriétés à rajouter
+	 */
 	static void setProperties(Properties prop)
 	{
 		for (Object key : prop.keySet())
@@ -210,11 +234,19 @@ public class MyEnv extends EnvironmentDescription
 		}
 	}
 	
+	/**
+	 * permet d'obtenir une propriété
+	 * @return la rpopriété demandée
+	 */
 	public static Properties getProperties()
 	{
 		return (Properties) properties.clone();
 	}
 	
+	/**
+	 * défini le panel à afficher
+	 * @param cpn le panel à afficher
+	 */
 	public static void setPanel(Container cpn)
 	{
 		

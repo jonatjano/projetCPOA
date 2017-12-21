@@ -10,7 +10,11 @@ import javax.swing.JPanel;
 
 import simbad.gui.Simbad;
 
-
+/**
+ * panel principal
+ * @author Jonathan Selle, Adam Bernouy
+ *
+ */
 public class MainPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +28,7 @@ public class MainPanel extends JPanel implements ActionListener
 		startBut.addActionListener(this);
 		add(startBut);
 
-		JButton helpBut = new JButton("Help");
+		JButton helpBut = new JButton("Aide");
 		helpBut.setAlignmentX(CENTER_ALIGNMENT);
 		helpBut.addActionListener(this);
 		add(helpBut);
@@ -47,7 +51,7 @@ public class MainPanel extends JPanel implements ActionListener
 			case "Start":
 				MyEnv.setPanel(new Simbad(new MyEnv(), false));
 			break;
-			case "Help":
+			case "Aide":
 				MyEnv.setPanel(new HelpPanel());
 			break;
 			case "Option":

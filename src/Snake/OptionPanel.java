@@ -30,24 +30,75 @@ import javax.vecmath.Color3f;
 
 import Snake.KeyController.Side;
 
-
+/**
+ * Panel qui permet de changer les options du jeu
+ * @author Jonathan Selle, Adam Bernouy
+ */
 public class OptionPanel extends JPanel implements ChangeListener, ActionListener
 {
+	/**
+	 * nombre maximum de snake en jeu
+	 * @see MyEnv.PROP_NB_SNAKE_PLAYER
+	 * @see MyEnv.DEFAULT_NB_SNAKE_PLAYER
+	 * @see MyEnv.PROP_NB_SNAKE_IA
+	 * @see MyEnv.DEFAULT_NB_SNAKE_IA
+	 */
 	private int MAX_SNAKE = 8;
+	/**
+	 * taille minimale du monde
+	 * @see MyEnv.PROP_WORLDSIZE
+	 * @see MyEnv.DEFAULT_WORLDSIZE
+	 */
 	private int MIN_WORLDSIZE = 10;
+	/**
+	 * taille maximale du jeu
+	 * @see MyEnv.PROP_WORLDSIZE
+	 * @see MyEnv.DEFAULT_WORLDSIZE
+	 */
 	private int MAX_WORLDSIZE = 25;
+	/**
+	 * multiplicateur de vitesse minimale
+	 * @see MyEnv.PROP_SPEED
+	 * @see MyEnv.DEFAULT_SPEED
+	 */
 	private int MIN_SPEED = 1;
+	/**
+	 * multiplicateur de vitesse maximale
+	 * @see MyEnv.PROP_SPEED
+	 * @see MyEnv.DEFAULT_SPEED
+	 */
 	private int MAX_SPEED = 5;
 
+	/**
+	 * liste contenant les couleurs des 8 serpents
+	 */
 	private static List<Color3f> snakeColor;
+	/**
+	 * liste contenant les 8 panel qui permettent de modifier les touches et la couleur des serpents
+	 */
 	private List<SnakeOptionPan> snakePanList;
 
 	private static final long serialVersionUID = 1L;
+	/**
+	 * JSlider permettant de modifier la taille du monde
+	 */
 	private JSlider worldSizeSlide;
+	/**
+	 * JSlider permettant de modifier la vitesse du serpent
+	 */
 	private JSlider speedSlide;
+	/**
+	 * JSlider permettant de modifier le nombre de serpent joueur
+	 */
 	private JSlider NbPlayerSlide;
+	/**
+	 * JSlider permettant de modifier le nombre de serpent IA
+	 */
 	private JSlider NbIASlide;
 
+	/**
+	 * initialisation de la couleur des robots
+	 */
 	static
 	{
 		snakeColor = new ArrayList<Color3f>();
@@ -61,12 +112,17 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		snakeColor.add(new Color3f(1f, 1f, 1f));
 	}
 
+	/**
+	 * le construteur ajoute au panel les JSLider et creer les panel de modification de serpent
+	 */
 	public OptionPanel()
 	{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+		
+		// on recupere les propriétés qui doivent être utiisée pour initialisé les valeurs
 		Properties prop = MyEnv.getProperties();
 
+		// changement de la taille du monde
 		add(new JLabel(" "));
 		JLabel worldSizeLab = new JLabel("Taille de la carte : valeur conseillée 15 pour 2 serpents");
 		worldSizeLab.setAlignmentX(CENTER_ALIGNMENT);
@@ -89,6 +145,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		add(worldSizeSlide);
 		add(new JLabel(" "));
 
+		// changement de la vitesse de deplacement
 		add(new JLabel(" "));
 		JLabel speedLab = new JLabel("Vitesse de déplacement : valeur conseillée 3");
 		speedLab.setAlignmentX(CENTER_ALIGNMENT);
@@ -110,6 +167,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		add(speedSlide);
 		add(new JLabel(" "));
 
+		// changement du nombre de joueur
 		add(new JLabel(" "));
 		JLabel NbPlayerLab = new JLabel("Nombre de joueurs");
 		NbPlayerLab.setAlignmentX(CENTER_ALIGNMENT);
@@ -132,6 +190,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		add(NbPlayerSlide);
 		add(new JLabel(" "));
 
+		// changement du nombre d'IA
 		/**
 		 * TODO enlever les // une fois que l'ia fonctionne
 		 */
@@ -156,6 +215,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 //		add(NbIASlide);
 //		add(new JLabel(" "));
 
+		// changement des valeurs des serpents
 		add(new JLabel(" "));
 		JLabel snakeOptionLab = new JLabel("Options des serpents");
 		snakeOptionLab.setAlignmentX(CENTER_ALIGNMENT);
@@ -166,6 +226,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		snakeChooserPan.setMaximumSize(new Dimension(500, 150));
 		for (int i = 0; i < 8; i++)
 		{
+			// on creer les bouton permettant de choisir quel serpent modifier
 			JButton but = new JButton("Serpent " + (i + 1));
 			but.addActionListener(this);
 			but.setName(i + "");
@@ -174,6 +235,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		add(snakeChooserPan);
 		add(new JLabel(" "));
 
+		// on ajoute les panel qui permettent de modifier le serpent
 		snakePanList = new ArrayList<SnakeOptionPan>();
 		for (int i = 0; i < MAX_SNAKE; i++)
 		{
@@ -182,15 +244,22 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			snakePanList.add(innerSnakePan);
 			add(innerSnakePan);
 		}
+		// on affiche celui du premier serpent
 		snakePanList.get(0).setVisible(true);
 
 		add(new JLabel(" "));
 
+		// le bouton permettant de confirmer nos choix
 		JButton confirm = new JButton("Confirmer");
 		confirm.addActionListener(this);
 		add(confirm);
 	}
 
+	/**
+	 * methode permettant de recupéré la couleur d'un serpent depuis le nom de sa tête
+	 * @param headName Le nom du serpent dont la couleur est demandée
+	 * @return la couleur du serpent
+	 */
 	public static Color3f getSnakeColor(String headName)
 	{
 		if (headName.matches("head[0-7]"))
@@ -200,6 +269,11 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		return null;
 	}
 
+	/**
+	 * appelée lors du changement de la valeur du JSlider indiquant le nombre de joueur
+	 * permet d'adapter le nombre de serpent IA possible pour un nombre de joueur
+	 * @see MAX_SNAKE
+	 */
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
@@ -215,15 +289,22 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		}
 	}
 
+	/**
+	 * appelé lors de l'appui sur un bouton
+	 * si le bouton est le bouton "confirmer" on enregistre les valeurs puis on retourne  l'écran principal
+	 * sinon on est sur un bouton de choix du serpent a modifier et on affiche le panel correspondant
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		JButton src = (JButton) e.getSource();
+		// c'est un bouton choix de panel
 		if (src.getText().startsWith("Serpent"))
 		{
 			int id = -1;
 			try
 			{
+				// on recupere l'id du serpent
 				id = Integer.parseInt(((JButton) e.getSource()).getName());
 				for (int i = 0; i < MAX_SNAKE; i++)
 				{
@@ -241,24 +322,33 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			{
 			}
 		}
+		// c'est le bouton confirmer
 		else if (src.getText().equals("Confirmer"))
 		{
+			// on enregistre les valeurs dans les propriétés
 			Properties prop = new Properties();
 			prop.put(MyEnv.PROP_WORLDSIZE, worldSizeSlide.getValue());
 			prop.put(MyEnv.PROP_NB_SNAKE_PLAYER, NbPlayerSlide.getValue());
 			prop.put(MyEnv.PROP_NB_SNAKE_IA, NbIASlide.getValue());
 			prop.put(MyEnv.PROP_SPEED, speedSlide.getValue());
 
+			// on enregistre les nouvelles couleurs des serpents
 			for (int i = 0; i < MAX_SNAKE; i++)
 			{
 				snakeColor.get(i).set(snakePanList.get(i).colorS);
 			}
 
 			MyEnv.setProperties(prop);
+			// on passe au panel principal
 			MyEnv.setPanel(new MainPanel());
 		}
 	}
 
+	/**
+	 * 
+	 * @author Jonathan Selle, Adam Bernouy
+	 *
+	 */
 	private class SnakeOptionPan extends JPanel implements ActionListener, IUpdateKey
 	{
 		public Color colorS;
@@ -310,7 +400,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 			this.rightKeyBut = new JButton(KeyEvent.getKeyText(KeyController.getControl("head" + snakeId + "Right")));
 			this.rightKeyBut.setName("head" + snakeId + "Right");
 			this.rightKeyBut.addActionListener(this);
-			labPan.add(this.rightKeyBut);
+			labPan.add(rightKeyBut);
 
 			add(labPan, BorderLayout.CENTER);
 
@@ -327,11 +417,11 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		public void actionPerformed(ActionEvent e)
 		{
 			this.lastSideButtonClicked = (JButton) e.getSource();
-			if (this.lastSideButtonClicked == this.leftKeyBut)
+			if (lastSideButtonClicked == leftKeyBut)
 			{
 				new SnakeOptionChangeKey(this, MyEnv.frame);
 			}
-			else if (this.lastSideButtonClicked == this.rightKeyBut)
+			else if (lastSideButtonClicked == rightKeyBut)
 			{
 				new SnakeOptionChangeKey(this, MyEnv.frame);
 			}
@@ -340,9 +430,9 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		@Override
 		public void onKeyUpdate(int keyCode)
 		{
-			if (this.lastSideButtonClicked != null)
+			if (lastSideButtonClicked != null)
 			{
-				KeyController.setControl(this.lastSideButtonClicked.getName(), keyCode);
+				KeyController.setControl(lastSideButtonClicked.getName(), keyCode);
 				lastSideButtonClicked.setText(KeyEvent.getKeyText(keyCode));
 			}
 		}
@@ -350,9 +440,9 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 		@Override
 		public int getActualKey()
 		{
-			if (this.lastSideButtonClicked != null)
+			if (lastSideButtonClicked != null)
 			{
-				return KeyController.getControl(this.lastSideButtonClicked.getName());
+				return KeyController.getControl(lastSideButtonClicked.getName());
 			}
 			return 0;
 		}
@@ -376,7 +466,7 @@ public class OptionPanel extends JPanel implements ChangeListener, ActionListene
 
 			JOptionPane optionPane = new JOptionPane();
 			JTextField field = getField();
-			optionPane.setMessage(new Object[] {"Type something: ", field});
+			optionPane.setMessage(new Object[] {"Ecrivez la touche : ", field});
 			optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
 			optionPane.setOptionType(JOptionPane.DEFAULT_OPTION);
 			JDialog dialog = optionPane.createDialog(frame, "Choisir une touche");

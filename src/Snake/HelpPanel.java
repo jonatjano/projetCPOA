@@ -10,6 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * panel donnant de l'aide (celui qu'on vois au tout début)
+ * @author Jonathan Selle, Adam Bernouy
+ *
+ */
 public class HelpPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;

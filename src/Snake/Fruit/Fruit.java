@@ -14,7 +14,10 @@ import Snake.SnakeHead;
 
 import simbad.sim.CherryAgent;
 
-
+/**
+ * classe abstraite permettant de creer des fruits
+ * @author Jonathan Selle, Adam Bernouy *
+ */
 public abstract class Fruit extends CherryAgent
 {
 	static List<Fruit> listFruit = new ArrayList<Fruit>();

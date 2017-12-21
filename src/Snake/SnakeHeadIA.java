@@ -8,7 +8,10 @@ import javax.vecmath.Vector3d;
 
 
 /**
- * @author jonathan
+ * tête des IA (non fonctionnelles)
+ * @see SnakeHead
+ * @see SnakeHeadPlayer
+ * @author Jonathan Selle, Adam Bernouy
  */
 public class SnakeHeadIA extends SnakeHead
 {

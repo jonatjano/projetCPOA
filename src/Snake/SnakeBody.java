@@ -6,6 +6,11 @@ import java.util.List;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3d;
 
+/**
+ * classe corps du serpent, suis le corps précedant à la perfection
+ * @author Jonathan Selle, Adam Bernouy
+ *
+ */
 public class SnakeBody extends SnakePart {
 
 	private List<Double> lastSpeeds;

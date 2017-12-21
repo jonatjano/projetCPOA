@@ -6,6 +6,13 @@ import Snake.Fruit.Fruit;
 
 import simbad.sim.SimpleAgent;
 
+/**
+ * classe mere des têtes de serpent
+ * gere les collision et le fait de manger les fruits
+ * @see SnakeHeadPlayer
+ * @see SnakeHeadIA
+ * @author Jonathan Selle, Adam Bernouy
+ */
 public abstract class SnakeHead extends SnakePart
 {	
 	private SnakePart last;

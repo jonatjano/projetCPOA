@@ -4,11 +4,15 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * classe abstraite permettant de lire si les touches sont appuyée ou pas
+ * @author Jonathan Selle, Adam Bernouy
+ *
+ */
 public abstract class KeyController
 {	
 	/**
 	 * Côté lié à la touche
-	 *
 	 */
 	public enum Side { LEFT, RIGHT };
 	

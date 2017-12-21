@@ -5,6 +5,12 @@ import javax.vecmath.Vector3d;
 
 import simbad.sim.Agent;
 
+/**
+ * classe abstraite donnant les valeurs par defaut pour les différentes parties du serpent
+ * @see SnakeHead
+ * @see SnakeBody
+ * @author Jonathan Selle, Adam Bernouy
+ */
 public abstract class SnakePart extends Agent
 {	
 	protected boolean startedToMove;
